@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/update_task_box_title"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:text="@string/update_task_box_title"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:background="#FFFFFF"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:weightSum="2">
+        <NumberPicker
+            android:id="@+id/updateMinutesPickerT"
+            android:theme="@android:style/Theme.Holo.Light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1" />
+        <NumberPicker
+            android:id="@+id/updateMinutesPickerO"
+            android:theme="@android:style/Theme.Holo.Light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1" />
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:text="@string/update_task_box_minutes"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:background="#FFFFFF"/>
+
+</LinearLayout>
