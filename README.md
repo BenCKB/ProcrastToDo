@@ -17,3 +17,7 @@
 ## What is this?
 This repository contains the source code and resource files used to create the Android app _ProcrastToDo_ which was available in the Google Playstore. It had __2.42k downloads__  with an average rating of __4.18 out of 5__.
 
+## Third Party
+- ### [Realm Database](https://realm.io/products/realm-database/) - Database management system
+- ### [Licenses Dialog](https://github.com/PSDev/LicensesDialog) - License view
+- ### [Android Onboarder](https://github.com/chyrta/AndroidOnboarder) - Welcome screen
