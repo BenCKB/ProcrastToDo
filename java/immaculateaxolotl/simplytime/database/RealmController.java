@@ -2,120 +2,133 @@ package immaculateaxolotl.simplytime.database;
 
 import android.app.Activity;
 import android.app.Application;
-import android.support.v4.app.Fragment;
+
+import androidx.fragment.app.Fragment;
 
 import immaculateaxolotl.simplytime.tasks.Task;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class RealmController {
+public class RealmController
+{
 
-    private static RealmController instance;
-    private final Realm realm;
+	private static RealmController instance;
+	private final Realm realm;
 
-    public RealmController(Application application) {
-        realm = Realm.getDefaultInstance();
-    }
+	public RealmController(Application application)
+	{
+		realm = Realm.getDefaultInstance();
+	}
 
-    public static RealmController with(Fragment fragment) {
+	public static RealmController with(Fragment fragment)
+	{
+		if (instance == null) {
+			instance = new RealmController(fragment.getActivity().getApplication());
+		}
+		return instance;
+	}
 
-        if (instance == null) {
-            instance = new RealmController(fragment.getActivity().getApplication());
-        }
-        return instance;
-    }
+	public static RealmController with(Activity activity)
+	{
 
-    public static RealmController with(Activity activity) {
+		if (instance == null) {
+			instance = new RealmController(activity.getApplication());
+		}
+		return instance;
+	}
 
-        if (instance == null) {
-            instance = new RealmController(activity.getApplication());
-        }
-        return instance;
-    }
+	public static RealmController with(Application application)
+	{
 
-    public static RealmController with(Application application) {
+		if (instance == null) {
+			instance = new RealmController(application);
+		}
+		return instance;
+	}
 
-        if (instance == null) {
-            instance = new RealmController(application);
-        }
-        return instance;
-    }
+	public static RealmController getInstance()
+	{
 
-    public static RealmController getInstance() {
+		return instance;
+	}
 
-        return instance;
-    }
+	public Realm getRealm()
+	{
+		return realm;
+	}
 
-    public Realm getRealm() {
+	//Refresh the realm instance
+	public void refresh()
+	{
+		realm.refresh();
+	}
 
-        return realm;
-    }
+	//clear all objects from Task.class
+	public void clearAll()
+	{
+		realm.beginTransaction();
+		RealmResults<Task> result = realm.where(Task.class).findAll();
+		result.deleteAllFromRealm();
+		realm.commitTransaction();
+	}
 
-    //Refresh the realm istance
-    public void refresh() {
-        realm.refresh();
-    }
+	//find all objects in the Task.class
+	public RealmResults<Task> getTasks()
+	{
+		return realm.where(Task.class).findAll();
+	}
 
-    //clear all objects from Task.class
-    public void clearAll() {
+	//query a single item with the given id
+	public Task getTask(String id)
+	{
 
-        realm.beginTransaction();
-        RealmResults<Task> result = realm.where(Task.class).findAll();
-        result.deleteAllFromRealm();
-        realm.commitTransaction();
-    }
+		return realm.where(Task.class).equalTo("id", id).findFirst();
+	}
 
-    //find all objects in the Task.class
-    public RealmResults<Task> getTasks() {
+	//check if Task.class is empty
+	public boolean hasTasks()
+	{
+		RealmResults<Task> result = realm.where(Task.class).findAll();
 
-        return realm.where(Task.class).findAll();
-    }
+		return !result.isEmpty();
+	}
 
-    //query a single item with the given id
-    public Task getTask(String id) {
+	public int amountTask()
+	{
+		RealmResults<Task> result = realm.where(Task.class).findAll();
+		return result.size();
+	}
 
-        return realm.where(Task.class).equalTo("id", id).findFirst();
-    }
+	//query example
+	public RealmResults<Task> queryedTasks(int time)
+	{
 
-    //check if Task.class is empty
-    public boolean hasTasks() {
-        RealmResults<Task> result = realm.where(Task.class).findAll();
+		return realm.where(Task.class)
+				.lessThanOrEqualTo("time", time)
+				.findAll();
 
-        return !result.isEmpty();
-    }
+	}
 
-    public int amountTask() {
-        RealmResults<Task> result = realm.where(Task.class).findAll();
-        return result.size();
-    }
+	public boolean taskExists(Task task)
+	{
+		if (task != null) {
+			realm.beginTransaction();
+			RealmResults<Task> rows = realm.where(Task.class).equalTo("id", task.getId()).findAll();
+			realm.commitTransaction();
+			if (rows.isEmpty()) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+		return false;
+	}
 
-    //query example
-    public RealmResults<Task> queryedTasks(int time) {
-
-        return realm.where(Task.class)
-                .lessThanOrEqualTo("time", time)
-                .findAll();
-
-    }
-
-    public boolean taskExists(Task task) {
-        if(task != null) {
-            realm.beginTransaction();
-            RealmResults<Task> rows = realm.where(Task.class).equalTo("id", task.getId()).findAll();
-            realm.commitTransaction();
-            if (rows.isEmpty()) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void deleteItem(Task task) {
-        realm.beginTransaction();
-        RealmResults<Task> rows = realm.where(Task.class).equalTo("id", task.getId()).findAll();
-        rows.deleteAllFromRealm();
-        realm.commitTransaction();
-    }
+	public void deleteItem(Task task)
+	{
+		realm.beginTransaction();
+		RealmResults<Task> rows = realm.where(Task.class).equalTo("id", task.getId()).findAll();
+		rows.deleteAllFromRealm();
+		realm.commitTransaction();
+	}
 }

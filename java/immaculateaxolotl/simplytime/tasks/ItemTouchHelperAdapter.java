@@ -1,6 +1,7 @@
 package immaculateaxolotl.simplytime.tasks;
 
-public interface ItemTouchHelperAdapter {
+public interface ItemTouchHelperAdapter
+{
 
-    void onItemDismiss(int position);
+	void onItemDismiss(int position);
 }
